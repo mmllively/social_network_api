@@ -75,10 +75,10 @@ addReaction (req, res) {
         {$addToSet: {reactions: req.body}}, 
         {runValidators: true, new: true}
         )
-        .then((user)=>
-        !user
+        .then((thought)=>
+        !thought
         ?res.status(404).json({message: 'No reaction to this thought found!'})
-        :res.json(user)
+        :res.json(thought)
         )
         .catch((err)=> res.status(500).json(err));
 },
@@ -90,12 +90,12 @@ removeReaction(req, res) {
         { $pull: { reaction: { reactionId: req.params.reactionId } } },
         { runValidators: true, new: true }
       )
-        .then((student) =>
-          !student
+        .then((thought) =>
+          !thought
             ? res
                 .status(404)
                 .json({ message: 'No reaction to this thought found!' })
-            : res.json(student)
+            : res.json(thought)
         )
         .catch((err) => res.status(500).json(err));
 },

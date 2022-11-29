@@ -14,8 +14,11 @@ getSingleUser(req, res){
     // findOne() on User
     User.findOne({_id: req.params.userId})
     // use .populate to populate friends and thoughts for that User
-    .populate('friends', 'thoughts')
+    //TODO: check on this 'populate'
+    .populate('friends')
+    .populate('thoughts')
     // ex: .populate('friends')
+    // TODO: add .then
 },
 //update a user 
 updateUser(req, res) {
