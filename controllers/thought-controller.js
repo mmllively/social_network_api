@@ -70,10 +70,34 @@ deleteThought(req, res) {
 addReaction (req, res) {
     // findOneAndUpdate
     // use $addtoSet - ref act 23, controllers/postController - check out how it's being used in the createPost
+    Thought.findOneAndUpdate(
+        {_id: req.params.thoughtId},
+        {$addToSet: {reactions: req.body}}, 
+        {runValidators: true, new: true}
+        )
+        .then((user)=>
+        !user
+        ?res.status(404).json({message: 'No reaction to this thought found!'})
+        :res.json(user)
+        )
+        .catch((err)=> res.status(500).json(err));
 },
 removeReaction(req, res) {
     //findOneAndUpdate
     // use $pull
+    Thought.findOneAndUpdate(
+        { _id: req.params.thoughtId },
+        { $pull: { reaction: { reactionId: req.params.reactionId } } },
+        { runValidators: true, new: true }
+      )
+        .then((student) =>
+          !student
+            ? res
+                .status(404)
+                .json({ message: 'No reaction to this thought found!' })
+            : res.json(student)
+        )
+        .catch((err) => res.status(500).json(err));
 },
 };
 
