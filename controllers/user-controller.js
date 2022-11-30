@@ -18,8 +18,25 @@ getSingleUser(req, res){
     .populate('friends')
     .populate('thoughts')
     // ex: .populate('friends')
-    // TODO: add .then
+    
+    .then((user)=>
+    !user
+    ?res.status(404).json({message: 'No userid found!'})
+    :res.json(user)
+    )
+    .catch((err)=> res.status(500).json(err));
+    
 },
+//create a user
+createUser(req, res) {
+    // use create() on Thought model
+    User.create(req.body)
+    .then((user) => res.json(user))
+    .catch((err) => {
+        return res.status(500).json(err);
+    });
+},
+
 //update a user 
 updateUser(req, res) {
     // findOneAndUpdata
@@ -64,13 +81,13 @@ addFriend(req, res) {
             : res.json(user)
         )
         .catch((err) => res.status(500).json(err));
-    // use $addtoSet - reference activity 23, controllers/postController - chcek out how it's being used in the createPost
+    // use $addtoSet - reference activity 23, controllers/postController - check out how it's being used in the createPost
 },
 // TODO: remove friend from friend list//
 removeFriend(req, res) {
     User.findOneAndUpdate(
         { _id: req.params.userId },
-        { $pull: { friend: { friendId: req.params.friendId } } },
+        { $pull: { friends: req.params.friendId }  },
         { runValidators: true, new: true }
       )
         .then((friend) =>
