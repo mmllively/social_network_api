@@ -4,8 +4,11 @@ const dateFormat = require('../utils/dateFormat');
 const reactionSchema = new Schema(
     {
         reactionId: {
-//TODO: Use Mongoose's ObjectId data type & Default value is set to a new ObjectId
+// Use Mongoose's ObjectId data type & Default value is set to a new ObjectId
+type: Schema.Types.ObjectId,
+default: () => new Types.ObjectId(),
         },
+    
         reactionBody: {
             type: String,
             required: true,
@@ -16,7 +19,7 @@ const reactionSchema = new Schema(
             required: true,
         },
         createdAt: {
-//TODO: Date - Set default value to the current timestamp & Use a getter method to format the timestamp on query
+// Date - Set default value to the current timestamp & Use a getter method to format the timestamp on query
 type: Date, default: Date.now
         }
         },

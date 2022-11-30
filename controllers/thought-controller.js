@@ -85,9 +85,11 @@ addReaction (req, res) {
 removeReaction(req, res) {
     //findOneAndUpdate
     // use $pull
+    console.log(req.params.thoughtId)
+    console.log(req.params.reactionId)
     Thought.findOneAndUpdate(
         { _id: req.params.thoughtId },
-        { $pull: { reaction: { reactionId: req.params.reactionId } } },
+        { $pull: { reactions: { reactionId: req.params.reactionId } } },
         { runValidators: true, new: true }
       )
         .then((thought) =>
@@ -95,7 +97,7 @@ removeReaction(req, res) {
             ? res
                 .status(404)
                 .json({ message: 'No reaction to this thought found!' })
-            : res.json(thought)
+            : res.send(thought)
         )
         .catch((err) => res.status(500).json(err));
 },
